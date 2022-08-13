@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "module": "es6",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "target": "ES6"
+  },
+  "exclude": ["tests", "node_modules"],
+  "ts-node": {
+    "esm": true
+  }
+}
