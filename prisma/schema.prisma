@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int       @id @default(autoincrement())
+  email    String    @unique
+  password String
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id     Int  @id @default(autoincrement())
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  @@map("sessions")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  category    String
+  type        Gender
+  description String
+  athletes    Athlete[]
+
+  @@unique([category, type])
+  @@map("categories")
+}
+
+model Athlete {
+  id         Int             @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  height     Int
+  weight     Int
+  photoPath  String
+  gender     Gender
+  birthDate  DateTime        @db.Date
+  birthPlace String
+  laterality Laterality
+  categoryId Int
+  category   Category        @relation(fields: [categoryId], references: [id])
+  results    AthleteResult[]
+
+  @@map("athletes")
+}
+
+model Umpire {
+  id             Int                  @id @default(autoincrement())
+  firstName      String
+  lastName       String
+  height         Int
+  weight         Int
+  photoPath      String
+  gender         Gender
+  birthDate      DateTime             @db.Date
+  birthPlace     String
+  profession     String
+  formation      String
+  participations UmpirePaticipation[]
+
+  @@map("umpires")
+}
+
+model AthleteResult {
+  id        Int      @id @default(autoincrement())
+  tounament String
+  result    Result
+  modality  String
+  startDate DateTime @db.Date
+  endDate   DateTime @db.Date
+  athleteId Int
+  athlete   Athlete  @relation(fields: [athleteId], references: [id])
+
+  @@map("athletes_results")
+}
+
+model UmpirePaticipation {
+  id             Int      @id @default(autoincrement())
+  tounament      String
+  umpiredMatches Int
+  referee        Boolean
+  startDate      DateTime @db.Date
+  endDate        DateTime @db.Date
+  umpireId       Int
+  umpire         Umpire   @relation(fields: [umpireId], references: [id])
+
+  @@map("umpire_participations")
+}
+
+enum Gender {
+  Masculino
+  Feminino
+}
+
+enum Laterality {
+  Destro
+  Canhoto
+}
+
+enum Result {
+  R64
+  R32
+  R16
+  QF
+  SF
+  F
+  C
+}

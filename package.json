@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/HMarcos/badminton-profile-back#readme",
   "dependencies": {
+    "@prisma/client": "^4.2.1",
     "bcrypt": "^5.0.1",
     "chalk": "^5.0.1",
     "cors": "^2.8.5",
