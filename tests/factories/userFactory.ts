@@ -20,7 +20,8 @@ async function registerUser() {
   const signUpData = createSignUpInfo();
   const userData = { email: signUpData.email, password: encryptionUtils.encryptWithBcrypt(signUpData.password) };
   const user = await prismaClient.user.create({ data: userData });
-  return user;
+  const userInfo = {...user, password: signUpData.password}
+  return userInfo;
 }
 
 const userFactory = {
